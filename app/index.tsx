@@ -1,13 +1,30 @@
 import React, { useState } from "react";
-import { Text, TextInput, View, StyleSheet, TouchableOpacity } from "react-native";
+import {Text, TextInput, View, StyleSheet, TouchableOpacity, ActivityIndicator} from "react-native";
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { Link } from "expo-router";
 import { Image } from "expo-image";
 import { Feather } from '@expo/vector-icons';
+import { useAuth } from "@/context/AuthContext";
 
 export default function Index() {
 
+    const { signIn } = useAuth();
+
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const handleLogin = async () => {
+        if (!username || !password) {
+            alert("Preencha todos os campos!");
+            return;
+        }
+
+        setLoading(true);
+        await signIn(username, password);
+        setLoading(false);
+    };
 
     return (
         <ActionSheetProvider>
@@ -30,6 +47,9 @@ export default function Index() {
                             placeholder="Digite seu usuário"
                             placeholderTextColor="#A0A0A0"
                             style={styles.input}
+                            value={username}
+                            onChangeText={setUsername}
+                            autoCapitalize="none"
                         />
                     </View>
 
@@ -41,20 +61,31 @@ export default function Index() {
                             placeholderTextColor="#A0A0A0"
                             secureTextEntry={!showPassword}
                             style={styles.input}
+                            value={password}
+                            onChangeText={setPassword}
                         />
                         <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
                             <Feather name={showPassword ? "eye" : "eye-off"} size={18} color="#A0A0A0" />
                         </TouchableOpacity>
                     </View>
 
-                    <Link href={""} asChild>
+                    <Link href={"/recover"} asChild>
                         <TouchableOpacity>
                             <Text style={styles.forgotPasswordText}>Esqueceu a senha?</Text>
                         </TouchableOpacity>
                     </Link>
 
-                    <TouchableOpacity style={styles.loginButton} activeOpacity={0.8}>
-                        <Text style={styles.loginButtonText}>Entrar</Text>
+                    <TouchableOpacity
+                        style={styles.loginButton}
+                        activeOpacity={0.8}
+                        onPress={handleLogin}
+                        disabled={loading}
+                    >
+                        {loading ? (
+                            <ActivityIndicator color="#FFFFFF" />
+                        ) : (
+                            <Text style={styles.loginButtonText}>Entrar</Text>
+                        )}
                     </TouchableOpacity>
 
                 </View>
