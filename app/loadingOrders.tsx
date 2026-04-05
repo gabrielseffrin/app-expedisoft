@@ -11,11 +11,9 @@ import {
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
 // IMPORTAÇÃO NOVA: Trazendo os ícones individualmente do Lucide
 import {
-    Clock,
     Hourglass,
     Calendar,
     PackageOpen,
-    CheckCircle,
     AlertTriangle,
     XCircle,
     Package,
@@ -99,7 +97,7 @@ export default function LoadingOrders() {
             case 'pending':
                 return { label: 'Pendente', bg: '#D97706', color: '#FFFFFF', Icon: Hourglass };
             case 'scheduled':
-                return { label: 'Agendado', bg: '#D97706', color: '#FFFFFF', Icon: Calendar };
+                return { label: 'Agendada', bg: '#D97706', color: '#FFFFFF', Icon: Calendar };
             case 'in_progress':
                 return { label: 'Em Andamento', bg: '#0284C7', color: '#FFFFFF', Icon: PackageOpen };
             case 'completed':
