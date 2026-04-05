@@ -22,6 +22,7 @@ import {
 } from "lucide-react-native";
 import { getOrders } from "@/services/order.service";
 import { Card } from "@/components/ui/card";
+import {router} from "expo-router";
 
 interface Order {
     id: number | string;
@@ -78,6 +79,10 @@ export default function LoadingOrders() {
         }
     };
 
+    const handleSelectOrder = (orderId: number | string) => {
+        router.push(`/order/${orderId}`);
+    };
+
     const formatDate = (dateString: string) => {
         if (!dateString) return '';
         try {
@@ -117,7 +122,7 @@ export default function LoadingOrders() {
         const StatusIcon = statusInfo.Icon;
 
         return (
-            <TouchableOpacity activeOpacity={0.7}>
+            <TouchableOpacity activeOpacity={0.9} onPress={() => { handleSelectOrder(item.id) }}>
                 <Card style={styles.card}>
 
                     <View style={[styles.absoluteBadge, { backgroundColor: statusInfo.bg }]}>

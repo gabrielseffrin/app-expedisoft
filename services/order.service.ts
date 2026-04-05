@@ -52,3 +52,8 @@ export async function getOrders(page: number = 1): Promise<PaginatedResponse<Ord
     const response = await api.get<PaginatedResponse<Order>>(`/order/my-orders/?page=${page}`);
     return response.data;
 }
+
+export async function getOrder(orderId: string): Promise<Order> {
+    const response = await api.get<Order>(`/order/${orderId}`);
+    return response.data;
+}
