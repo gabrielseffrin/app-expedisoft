@@ -12,7 +12,6 @@ export default function TabLayout() {
         <Tabs
             screenOptions={{
                 tabBarActiveTintColor: '#1B143F',
-
                 headerStyle: {
                     backgroundColor: '#FFFFFF',
                     elevation: 3,
@@ -28,7 +27,6 @@ export default function TabLayout() {
                 name="home"
                 options={{
                     title: 'Início',
-
                     headerTitle: () => (
                         <Image
                             source={require('../../assets/images/logo-expedisoft.png')}
@@ -36,22 +34,20 @@ export default function TabLayout() {
                             contentFit="contain"
                         />
                     ),
-
                     headerLeft: () => (
                         <TouchableOpacity style={{ marginLeft: 20 }}>
                             <Feather name="menu" size={26} color="#1B143F" />
                         </TouchableOpacity>
                     ),
-
                     headerRight: () => (
                         <TouchableOpacity style={{ marginRight: 20 }} onPress={signOut}>
                             <Feather name="log-out" size={24} color="#1B143F" />
                         </TouchableOpacity>
                     ),
-
                     tabBarIcon: ({ color }) => <Feather name="home" size={24} color={color} />,
                 }}
             />
+            {/* O loadingOrders foi removido daqui! */}
         </Tabs>
     );
 }
