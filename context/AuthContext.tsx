@@ -37,6 +37,7 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
                 }
             } catch (error) {
                 console.error("Erro ao carregar usuário:", error);
+                //await SecureStore.deleteItemAsync('token');
             } finally {
                 setLoading(false);
             }

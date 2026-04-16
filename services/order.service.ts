@@ -57,3 +57,13 @@ export async function getOrder(orderId: string): Promise<Order> {
     const response = await api.get<Order>(`/order/${orderId}`);
     return response.data;
 }
+
+export  async function startLoad(orderId: string): Promise<any> {
+    const response = await api.post(`/order/${orderId}/start-order`);
+    return response.data;
+}
+
+export  async function finishLoad(orderId: string): Promise<any> {
+    const response = await api.post(`/order/${orderId}/finish-order`);
+    return response.data;
+}
