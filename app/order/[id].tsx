@@ -1,15 +1,19 @@
 // app/order/[id].tsx
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, ActivityIndicator, ScrollView} from 'react-native';
-import {useLocalSearchParams} from 'expo-router';
+import {router, useLocalSearchParams} from 'expo-router';
 import {getOrder, startLoad, finishLoad} from "@/services/order.service";
 import {Card} from "@/components/ui/card";
 import {QrCode, Camera} from "lucide-react-native/icons";
+import {useCameraPermissions} from "expo-camera";
 
 export default function OrderDetails() {
     const {id} = useLocalSearchParams();
 
     const [order, setOrder] = useState<any>(null);
+
+    const [permission, requestPermission] = useCameraPermissions();
+    const [permissionsGranted, setPermissionsGranted] = useState(false);
 
     const [loading, setLoading] = useState(false);
     const [actionLoading, setActionLoading] = useState(false);
@@ -52,6 +56,19 @@ export default function OrderDetails() {
             setActionLoading(false);
         }
     };
+
+    const scanPackage = async () => {
+        if (!permission?.granted) {
+            const { granted } = await requestPermission();
+
+            if (!granted) {
+                alert("É necessário dar permissão da câmera para escanear.");
+                return;
+            }
+        }
+
+        router.push(`/qrCodeScan/${order.id}`);
+    }
 
     const getAllPackages = () => {
         if (!order || !order.items) return [];
@@ -170,7 +187,7 @@ export default function OrderDetails() {
             {!loading && order && order.status !== 'completed' && order.status !== 'cancelled' && (
                 <View style={styles.fixedFooter}>
                     <View style={styles.actionRow}>
-                        <TouchableOpacity style={styles.actionButtonLight} activeOpacity={0.8}>
+                        <TouchableOpacity style={styles.actionButtonLight} activeOpacity={0.8} onPress={() => scanPackage()}>
                             <QrCode size={18} color="#1E40AF"/>
                             <Text style={styles.actionButtonLightText}>Escanear</Text>
                         </TouchableOpacity>
