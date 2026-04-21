@@ -60,6 +60,29 @@ export default function RootLayout() {
                             ),
                         }}
                     />
+                    <Stack.Screen
+                        name="qrCodeScan/[id]"
+                        options={{
+                            headerShown: false,
+                            title: 'QR Code Scan',
+                            headerTitleAlign: 'center',
+                            headerStyle: {
+                                backgroundColor: '#FFFFFF',
+                            },
+                            headerTitleStyle: {
+                                color: '#333333',
+                                fontSize: 18,
+                                fontWeight: '600',
+                            },
+                            headerLeft: () => (
+                                <TouchableOpacity
+                                    onPress={() => router.back()}
+                                >
+                                    <Feather name="arrow-left" size={26} color="#4B5563" />
+                                </TouchableOpacity>
+                            ),
+                        }}
+                    />
                 </Stack>
             </ActionSheetProvider>
         </AuthProvider>
