@@ -58,12 +58,14 @@ export async function getOrder(orderId: string): Promise<Order> {
     return response.data;
 }
 
-export  async function startLoad(orderId: string): Promise<any> {
+export async function startLoad(orderId: string): Promise<any> {
     const response = await api.post(`/order/${orderId}/start-order`);
     return response.data;
 }
 
-export  async function finishLoad(orderId: string): Promise<any> {
-    const response = await api.post(`/order/${orderId}/finish-order`);
+export async function finishLoad(orderId: string, justification?: string): Promise<any> {
+    const response = await api.post(`/order/${orderId}/finish-order`, {
+        justification: justification
+    });
     return response.data;
 }
