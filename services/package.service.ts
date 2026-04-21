@@ -1,11 +1,10 @@
 import {api} from "./api";
 
 interface qrCodeData {
-    unique_package_code: string;
-    order_id: string;
+    qr_code: string;
 }
 
-export async function loadPackage(orderId: string): Promise<qrCodeData> {
-    const response = await api.post<qrCodeData>(`order/${orderId}/checklist`);
+export async function loadPackage(orderId: string, qrCode: qrCodeData): Promise<qrCodeData> {
+    const response = await api.post<qrCodeData>(`order/${orderId}/checklist`, qrCode);
     return response.data;
 }

@@ -1,9 +1,10 @@
-// app/qrCodeScan (Certifique-se de que está dentro da pasta app)
+// app/qrCodeScan
 import { CameraView } from "expo-camera";
-import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
+import {StyleSheet, View, TouchableOpacity, Text, Alert} from "react-native";
 import { useState } from "react";
 import {router, useLocalSearchParams, useRouter} from "expo-router";
 import { Feather } from "@expo/vector-icons";
+import {loadPackage} from "@/services/package.service";
 
 export default function QrCodeScan() {
 
@@ -12,18 +13,21 @@ export default function QrCodeScan() {
 
     const [scanned, setScanned] = useState(false);
 
-    const handleBarCodeScanned = ({ data }: { data: string }) => {
+    const handleBarCodeScanned = async ({ data }: { data: string }) => {
         if (scanned) return;
-
         setScanned(true);
-        console.log("QR Code Lido:", data);
 
-        alert(`Código lido: ${data} e associado à ordem ${orderId}`);
+        try {
+            await loadPackage(orderId, { qr_code: data });
 
-        // Volta para a tela da ordem após ler
-        setTimeout(() => {
-            router.back();
-        }, 1500);
+            Alert.alert("Sucesso!", "A caixa foi adicionada à ordem.");
+        } catch (error) {
+            Alert.alert("Erro!", "Não foi possível adicionar a caixa. Tente novamente.");
+        } finally {
+            setTimeout(() => {
+                router.back();
+            }, 1500);
+        }
     };
 
     return (
