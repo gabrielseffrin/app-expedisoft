@@ -228,6 +228,62 @@ export default function OrderDetails() {
                     </View>
                 </View>
             )}
+
+            <Modal
+                visible={isModalVisible}
+                transparent={true}
+                animationType="fade"
+                onRequestClose={() => setIsModalVisible(false)}
+            >
+                <View style={styles.modalOverlay}>
+                    <View style={styles.modalContainer}>
+                        <Text style={[styles.modalTitle, isComplete && { color: '#059669' }]}>
+                            {isComplete ? 'Concluir Carga' : 'Carga Incompleta!'}
+                        </Text>
+
+                        <Text style={styles.modalText}>
+                            {isComplete
+                                ? 'Todas as caixas foram conferidas com sucesso! Deseja adicionar alguma observação antes de finalizar? (Opcional)'
+                                : `Faltam ${totalPackages - packagesConferred} caixas para serem conferidas. Por favor, justifique o motivo de finalizar agora (Obrigatório):`
+                            }
+                        </Text>
+
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder="Digite a observação..."
+                            placeholderTextColor="#9CA3AF"
+                            multiline
+                            numberOfLines={3}
+                            value={justification}
+                            onChangeText={setJustification}
+                        />
+
+                        <View style={styles.modalActionRow}>
+                            <TouchableOpacity
+                                style={styles.modalButtonCancel}
+                                onPress={() => setIsModalVisible(false)}
+                            >
+                                <Text style={styles.modalButtonCancelText}>Cancelar</Text>
+                            </TouchableOpacity>
+
+                            <TouchableOpacity
+                                style={[
+                                    styles.modalButtonConfirm,
+                                    (!isComplete && !justification.trim()) && { backgroundColor: '#93C5FD' }
+                                ]}
+                                onPress={() => executeAction('finish', justification)}
+                                disabled={actionLoading || (!isComplete && !justification.trim())}
+                            >
+                                {actionLoading ? (
+                                    <ActivityIndicator size="small" color="#FFFFFF" />
+                                ) : (
+                                    <Text style={styles.modalButtonConfirmText}>Confirmar</Text>
+                                )}
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </View>
     );
 }
