@@ -9,7 +9,6 @@ import {
     RefreshControl
 } from "react-native";
 import { ActionSheetProvider } from "@expo/react-native-action-sheet";
-// IMPORTAÇÃO NOVA: Trazendo os ícones individualmente do Lucide
 import {
     Hourglass,
     Calendar,
