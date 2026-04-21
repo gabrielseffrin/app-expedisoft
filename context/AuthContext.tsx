@@ -3,6 +3,7 @@ import {useRouter, usePathname, useRootNavigationState} from 'expo-router';
 import {authService} from "@/services/auth.service";
 import * as SecureStore from 'expo-secure-store';
 import {is} from "@babel/types";
+import {Alert} from "react-native";
 
 interface User {
     id: string;
@@ -76,7 +77,7 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
                 console.log("Erro interno:", error.message);
             }
 
-            alert("Falha no login. Olhe o terminal do Expo!");
+            Alert.alert("Falha no login.");
         }
     };
 
