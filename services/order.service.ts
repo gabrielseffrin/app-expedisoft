@@ -69,3 +69,11 @@ export async function finishLoad(orderId: string, justification?: string): Promi
     });
     return response.data;
 }
+
+export const uploadOrderPhotos = async (orderId: string, formData: FormData) => {
+    return api.post(`/order/${orderId}/photos`, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data',
+        },
+    });
+};
