@@ -3,7 +3,7 @@ import {api} from "./api";
 interface Order {
     id: string;
     external_id: string;
-    status: 'pending' | 'completed' | 'cancelled';
+    status: 'pending' | 'completed' | 'cancelled' | 'divergence';
     customerName: string;
     destination: string;
     carrier: string;
@@ -16,27 +16,23 @@ interface Order {
     schedule: string;
     startedAt: string;
     completedAt: string;
-    items: [
-        {
+    items: Array<{
+        id: string;
+        quantity: number;
+        note: string;
+        product: {
             id: string;
-            quantity: number;
-            note: string;
-            product: {
-                id: string;
-                description: string;
-                sku: string;
-                unit: string;
-                weight: number;
-            },
-            packages: [
-                {
-                    id: string;
-                    unique_package_code: string;
-                    quantity_in_package: number;
-                }
-            ]
-        }
-    ]
+            description: string;
+            sku: string;
+            unit: string;
+            weight: number;
+        };
+        packages: Array<{
+            id: string;
+            unique_package_code: string;
+            quantity_in_package: number;
+        }>;
+    }>
     totalAmount: number;
     createdAt: string;
     updatedAt: string;
@@ -70,10 +66,11 @@ export async function finishLoad(orderId: string, justification?: string): Promi
     return response.data;
 }
 
-export const uploadOrderPhotos = async (orderId: string, formData: FormData) => {
-    return api.post(`/order/${orderId}/photos`, formData, {
+export const uploadOrderPhotos = async (orderId: string, formData: FormData): Promise<any> => {
+    const response = await api.post(`/order/${orderId}/photos`, formData, {
         headers: {
             'Content-Type': 'multipart/form-data',
         },
     });
+    return response.data;
 };

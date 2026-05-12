@@ -2,7 +2,6 @@ import React, {createContext, useContext, useState, useEffect} from 'react';
 import {useRouter, usePathname, useRootNavigationState} from 'expo-router';
 import {authService} from "@/services/auth.service";
 import * as SecureStore from 'expo-secure-store';
-import {is} from "@babel/types";
 import {Alert} from "react-native";
 
 interface User {
@@ -68,13 +67,15 @@ export function AuthProvider({children}: { children: React.ReactNode }) {
             const userData = await authService.getCurrentUser();
             setUser(userData);
         } catch (error: any) {
-            if (error.response) {
-                console.log("Status do Erro:", error.response.status);
-                console.log("Resposta do Laravel:", JSON.stringify(error.response.data, null, 2));
-            } else if (error.request) {
-                console.log("Erro de Rede (Sem resposta):", error.message);
-            } else {
-                console.log("Erro interno:", error.message);
+            if (__DEV__) {
+                if (error.response) {
+                    console.log("Status do Erro:", error.response.status);
+                    console.log("Resposta do Laravel:", JSON.stringify(error.response.data, null, 2));
+                } else if (error.request) {
+                    console.log("Erro de Rede (Sem resposta):", error.message);
+                } else {
+                    console.log("Erro interno:", error.message);
+                }
             }
 
             Alert.alert("Falha no login.");
