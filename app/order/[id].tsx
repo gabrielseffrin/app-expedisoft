@@ -15,7 +15,7 @@ import {
 import { router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import { getOrder, startLoad, finishLoad, uploadOrderPhotos } from "@/services/order.service";
 import { Card } from "@/components/ui/card";
-import { QrCode, Camera, X } from "lucide-react-native/icons";
+import { QrCode, Camera, X } from "lucide-react-native";
 import { useCameraPermissions } from "expo-camera";
 import * as ImagePicker from 'expo-image-picker';
 
@@ -29,7 +29,7 @@ interface Order {
     customer?: string;
     destination: string;
     carrier: string;
-    status: 'scheduled' | 'pending' | 'completed' | 'cancelled' | 'in_progress';
+    status: 'scheduled' | 'pending' | 'completed' | 'cancelled' | 'in_progress' | 'divergence';
     items: {
         product: { description: string; sku: string; unit: string; };
         packages: Package[];
@@ -60,7 +60,7 @@ export default function OrderDetails() {
         try {
             const orderId = Array.isArray(id) ? id[0] : id;
             const response = await getOrder(orderId);
-            setOrder(response.data);
+            setOrder(response);
             setError(null);
         } catch (err) {
             setError("Não foi possível carregar os detalhes da carga.");

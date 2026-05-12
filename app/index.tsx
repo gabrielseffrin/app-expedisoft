@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {Text, TextInput, View, StyleSheet, TouchableOpacity, ActivityIndicator} from "react-native";
+import {Text, TextInput, View, StyleSheet, TouchableOpacity, ActivityIndicator, Alert} from "react-native";
 import { ActionSheetProvider } from '@expo/react-native-action-sheet';
 import { Link } from "expo-router";
 import { Image } from "expo-image";
@@ -17,7 +17,7 @@ export default function Index() {
 
     const handleLogin = async () => {
         if (!username || !password) {
-            alert("Preencha todos os campos!");
+            Alert.alert("Campos obrigatórios", "Preencha todos os campos!");
             return;
         }
 

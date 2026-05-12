@@ -2,7 +2,7 @@
 import { CameraView } from "expo-camera";
 import {StyleSheet, View, TouchableOpacity, Text, Alert} from "react-native";
 import { useState } from "react";
-import {router, useLocalSearchParams, useRouter} from "expo-router";
+import {router, useLocalSearchParams} from "expo-router";
 import { Feather } from "@expo/vector-icons";
 import {loadPackage} from "@/services/package.service";
 
@@ -15,6 +15,12 @@ export default function QrCodeScan() {
 
     const handleBarCodeScanned = async ({ data }: { data: string }) => {
         if (scanned) return;
+
+        if (!orderId) {
+            Alert.alert("Erro", "ID da ordem inválido. Volte e tente novamente.");
+            return;
+        }
+
         setScanned(true);
 
         try {
